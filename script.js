@@ -22,9 +22,24 @@ function addItemToDOM(item){
     const li = document.createElement('li');
     li.appendChild(document.createTextNode(item));
     listItem.appendChild(li);
-
+    const button = createButton('remove-item text-red');
+    li.appendChild(button);
     inputField.value = '';
     inputField.focus();
+}
+
+function createButton(classes) {
+    const button = document.createElement('button');
+    button.className = classes;
+    const icon = createIcon('fa-solid fa-xmark');
+    button.appendChild(icon);
+    return button;
+}
+
+function createIcon(classes){
+    const icon = document.createElement("i");
+    icon.className = classes;
+    return icon
 }
 
 function addItemToStorage(item) {
@@ -45,7 +60,7 @@ function getItemsFromStorage(item){
 
 function onClickItem(e) {
     if(e.target.parentElement.classList.contains('remove-item')){
-        removeItem(e.parentElement.parentElement);
+        removeItem(e.target.parentElement.parentElement);
     }
 }
 
@@ -60,6 +75,13 @@ function clearItems(item){
 
     }
     localStorage.removeItem('items')
+}
+
+function removeItemFroStorage(item) {
+    let itemsFromStorage = getItemsFromStorage();
+    itemsFromStorage = itemsFromStorage.filter((i) => i !== item);
+
+    localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
 itemForm.addEventListener('submit', onAddItemSubmit);
