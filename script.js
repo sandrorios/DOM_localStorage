@@ -1,7 +1,7 @@
 const itemForm = document.getElementById('form-item');
 const inputField = document.getElementById('input-field');
 const listItem = document.getElementById('list-item');
-const filterItems = document.getElementById('filter');
+const filter = document.getElementById('filter');
 const clearBtn = document.getElementById('clear');
 function displayItems(){
     let itemsFromStorage = getItemsFromStorage();
@@ -84,7 +84,22 @@ function removeItemFroStorage(item) {
     localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
+function filterItems(e){
+    const items = listItem.querySelectorAll('li');
+    const text = e.target.value.toLowerCase();
+
+    items.forEach((items) => {
+        const itemName = items.firstChild.textContent.toLowerCase();
+        if(itemName.indexOf(text)!= -1){
+            items.style.display = 'flex';
+        }else{
+            items.style.display = 'none';
+        }
+    })
+}
+
 itemForm.addEventListener('submit', onAddItemSubmit);
 listItem.addEventListener('click', onClickItem);
 clearBtn.addEventListener('click', clearItems)
+filter.addEventListener('input', filterItems);
 document.addEventListener('DOMContentLoaded', displayItems);
