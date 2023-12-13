@@ -17,8 +17,20 @@ function onAddItemSubmit(e) {
         alert("Please add an item");
         return;
     }
+
+    if(isEditMode){
+        const itemToEdit = listItem.querySelector('.edit-mode');
+
+        removeItemFromStorage(itemToEdit.textContent);
+        itemToEdit.classList.remove('edit-mode');
+        itemToEdit.remove();
+        isEditMode = false;
+    }
     addItemToDOM(newItem);
     addItemToStorage(newItem)
+
+    inputField.value = '';
+    inputField.focus();
 }
 
 function addItemToDOM(item){
@@ -27,8 +39,6 @@ function addItemToDOM(item){
     listItem.appendChild(li);
     const button = createButton('remove-item text-red');
     li.appendChild(button);
-    inputField.value = '';
-    inputField.focus();
 }
 
 function createButton(classes) {
@@ -81,7 +91,7 @@ function setItemToEdit(item) {
 
 function removeItem(item) {
     item.remove();
-    removeItemFroStorage(item.textContent);
+    removeItemFromStorage(item.textContent);
 }
 
 function clearItems(item){
@@ -92,7 +102,7 @@ function clearItems(item){
     localStorage.removeItem('items')
 }
 
-function removeItemFroStorage(item) {
+function removeItemFromStorage(item) {
     let itemsFromStorage = getItemsFromStorage();
     itemsFromStorage = itemsFromStorage.filter((i) => i !== item);
 
@@ -112,6 +122,11 @@ function filterItems(e){
         }
     })
 }
+
+formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
+formBtn.style.backgroundColor = '#333';
+
+isEditMode = false;
 
 itemForm.addEventListener('submit', onAddItemSubmit);
 listItem.addEventListener('click', onClickItem);
