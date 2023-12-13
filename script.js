@@ -9,6 +9,8 @@ let isEditMode = false;
 function displayItems(){
     let itemsFromStorage = getItemsFromStorage();
     itemsFromStorage = itemsFromStorage.forEach((item) => addItemToDOM(item));
+
+    checkUI();
 }
 function onAddItemSubmit(e) {
     e.preventDefault();
@@ -31,6 +33,8 @@ function onAddItemSubmit(e) {
 
     inputField.value = '';
     inputField.focus();
+
+    checkUI();
 }
 
 function addItemToDOM(item){
@@ -39,6 +43,8 @@ function addItemToDOM(item){
     listItem.appendChild(li);
     const button = createButton('remove-item text-red');
     li.appendChild(button);
+
+    checkUI();
 }
 
 function createButton(classes) {
@@ -92,6 +98,8 @@ function setItemToEdit(item) {
 function removeItem(item) {
     item.remove();
     removeItemFromStorage(item.textContent);
+
+    checkUI();
 }
 
 function clearItems(item){
@@ -100,6 +108,8 @@ function clearItems(item){
 
     }
     localStorage.removeItem('items')
+
+    checkUI();
 }
 
 function removeItemFromStorage(item) {
@@ -123,13 +133,27 @@ function filterItems(e){
     })
 }
 
-formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
-formBtn.style.backgroundColor = '#333';
+function checkUI(){
+    inputField.value = '';
+    const items = listItem.querySelectorAll('li');
+    if(items.length === 0){
+        clearBtn.style.display = 'none';
+        filter.style.display = 'none';
+    }else{
+        clearBtn.style.display = 'block';
+        filter.style.display = 'block';
+    }
+    formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
+    formBtn.style.backgroundColor = '#333';
+    
+    isEditMode = false;
+}
 
-isEditMode = false;
 
 itemForm.addEventListener('submit', onAddItemSubmit);
 listItem.addEventListener('click', onClickItem);
 clearBtn.addEventListener('click', clearItems)
 filter.addEventListener('input', filterItems);
 document.addEventListener('DOMContentLoaded', displayItems);
+
+checkUI();
