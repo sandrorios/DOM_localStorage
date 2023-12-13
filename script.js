@@ -2,7 +2,10 @@ const itemForm = document.getElementById('form-item');
 const inputField = document.getElementById('input-field');
 const listItem = document.getElementById('list-item');
 const filter = document.getElementById('filter');
+const formBtn = itemForm.querySelector('button');
 const clearBtn = document.getElementById('clear');
+let isEditMode = false;
+
 function displayItems(){
     let itemsFromStorage = getItemsFromStorage();
     itemsFromStorage = itemsFromStorage.forEach((item) => addItemToDOM(item));
@@ -61,7 +64,19 @@ function getItemsFromStorage(item){
 function onClickItem(e) {
     if(e.target.parentElement.classList.contains('remove-item')){
         removeItem(e.target.parentElement.parentElement);
+    }else{
+        setItemToEdit(e.target);
     }
+}
+
+function setItemToEdit(item) {
+    isEditMode = true;
+    listItem.querySelectorAll('li').forEach((i) => i.classList.remove('edit-mode'));
+
+    item.classList.add('edit-mode');
+    formBtn.innerHTML = '<i class="fa-solid fa-pen"></i> Update Item';
+    formBtn.style.backgroundColor = '#228B22';
+    inputField.value = item.textContent;
 }
 
 function removeItem(item) {
