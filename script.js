@@ -28,6 +28,13 @@ function onAddItemSubmit(e) {
         itemToEdit.remove();
         isEditMode = false;
     }
+    if(isEditMode){
+        const itemToEdit = itemList.querySelector('.edit-mode');
+        removeItemFromStorage(itemToEdit.texContent);
+        itemToEdit.classList.remove('edit-mode');
+        itemToEdit.remove();
+        isEditMode = false;
+    }
     addItemToDOM(newItem);
     addItemToStorage(newItem)
 
